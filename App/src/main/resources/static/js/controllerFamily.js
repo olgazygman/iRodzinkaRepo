@@ -10,7 +10,7 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
    
     //wybor rodziny
     
-    var irodzina = "grupa1"; //"grupa1"; //"Rodzina1";
+    var irodzina = "Rodzin1";
     $scope.irodzina = irodzina;
  
     
