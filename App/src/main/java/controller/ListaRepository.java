@@ -16,4 +16,5 @@ public interface ListaRepository extends PagingAndSortingRepository<Lista, Long>
 			@Param("do") @DateTimeFormat(iso = ISO.DATE) Date date2);
 	List<Lista> findByGrupa_NazwaAndKiedyBetween(@Param("grupa") String nazwa, @Param("od") @DateTimeFormat(iso = ISO.DATE) Date date1, 
 			@Param("do") @DateTimeFormat(iso = ISO.DATE) Date date2);
+	List<Lista> findByGrupa_NazwaAndKiedyAfter(@Param("grupa") String nazwa, @Param("od") @DateTimeFormat(iso = ISO.DATE) Date date1);
 }

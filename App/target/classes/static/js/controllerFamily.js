@@ -2,17 +2,18 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
  
     //parametry
     $scope.selectedUser = "all";
-    $scope.stepFuture = 14;
     $scope.stepPast = 7;
     $scope.users = [];
     $scope.zakupy = [];
     $http.defaults.headers.post["Content-Type"] = "application/json";
+    $http.defaults.useXDomain = true;
    
     //wybor rodziny
     
-    var irodzina = "Rodzin1";
+    var irodzina = "grupa1"; //"grupa1"; //"Rodzina1";
     $scope.irodzina = irodzina;
  
+    
     
     //date
     $scope.formatDate = function (date) {
@@ -20,12 +21,10 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
       }; 
   	var date = new Date();  
     $scope.today = $scope.formatDate($scope.date);
-    date.setDate(date.getDate() + $scope.stepFuture);
-    $scope.dateEnd = $scope.formatDate(date);
-    date = new Date();
     date.setDate(date.getDate() - $scope.stepPast);
     $scope.dateStart = $scope.formatDate(date);
     
+   
     //odczyt ID grupy
     $http.get("http://localhost:8080/grupa/search/findByNazwa?nazwa="+irodzina).success(function (data)
             {
@@ -52,9 +51,9 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
             alert("Problem z odczytem uzytkownikow");
             });
     
-    
-    $http.get("http://localhost:8080/lista/search/findByGrupa_NazwaAndKiedyBetween?grupa="
-    		+ irodzina + "&od=" + $scope.dateStart + "&do=" + $scope.dateEnd )
+    //odczyt listy
+    $http.get("http://localhost:8080/lista/search/findByGrupa_NazwaAndKiedyAfter?grupa="
+    		+ irodzina + "&od=" + $scope.dateStart )
     .then(function(data) {
         var zakupy = data.data._embedded.lista;
         var TasksArray = [];
@@ -75,9 +74,13 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
         });
    
     
+    $scope.showPast = function() {
+    	$scope.stepPast = $scope.stepPast-7;
+    };
+    
     $scope.selectUser = function(user) {
     	if (user=='all') $scope.selectedUser = 'all';
-    		else $scope.selectedUser = user;
+    		else $scope.selectedUser = user.imie;
     };
 
     
@@ -130,10 +133,12 @@ apka.controller('FamilyController', function($scope,$http,$filter,$q) {
     		$scope.edycja.stan = "kup";
     		$scope.edycja.kategoria = "http://localhost:8080/kategoria/1";
     		$scope.edycja.grupa = "http://localhost:8080/grupa/" + $scope.id;
-    		$http.post("http://localhost:8080/lista",$scope.edycja).success(function (data)
+    		$http.post("http://localhost:8080/lista",$scope.edycja).success(function(callback)
             		{
     				$scope.edycja.imie = $scope.users[$scope.edycja.imie].imie;
     				$scope.zakupy.push($scope.edycja);
+    				console.log(callback);
+    				//return 
     				alert("Dodano zakup");
             		}).error(function(error)
             	    {

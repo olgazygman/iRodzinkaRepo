@@ -8,7 +8,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-resource.js"></script>
     	<script src="./js/application.js"></script>
     	<script src="./js/controllerFamily.js"></script>
-		<title>iRodzinka</title>
+		<title>i Rodzinka</title>
 	</head>
 	
 	<body ng-app="iFamily">
@@ -29,17 +29,19 @@
 					</div>
 					
 					<div class="uzytkownik" ng-repeat="uzytkownik in users" >
-					  <div ng-click="selectUser(uzytkownik.imie)">- {{uzytkownik.imie}}</div>
+					  <div ng-click="selectUser(uzytkownik)">- {{uzytkownik.imie}}</div>
 					</div>
 					
+				</div>	
+				
+				<div class="rodzinka">
 					<input id="check" type="checkbox" ng-model="Check.kup" ng-init="Check.kup=false"></input>
-						<label for="check"> Ukryj zakończone zakupy</label>
-					
+						<label for="check"> Ukryj zakończone zakupy</label>		
 				</div>
 				
 			</div>	
 			
-			<div class="panelRight">
+			<div class="panelRight"><div class="panelRightInside">
 			
 				<div class="lista_title">Nasza lista zakupów</div>
 				
@@ -57,27 +59,26 @@
 						<div class="item add" ng-click="edycjaOkno(null)">DODAJ ZAKUP DO LISTY</div>
 					</div>
 					
-					<div class="pagination" onclick="showPast">Pokaż wcześniejsze zakupy</div>
+					<div class="pagination" onclick="showPast()">Pokaż wcześniejsze zakupy</div>
 					<div class="item_bar" 
-					ng-repeat="lista in zakupy | filter: filterFunction | orderBy:'kiedy' "  
-					ng-style="{'color':(lista.stan=='kupione'?'grey':'white')}" >
-						<div class="mid">{{lista.kiedy}}</div>
-						<div class="lon">{{lista.opis}}</div>
-						<div class="sho">{{lista.ilosc}}</div>						
-						<div class="mid">{{lista.imie}}</div>
-						<div class="item mid" ng-click="stan(lista)">{{lista.stan}}</div>
-						<div class="item mid" ng-click="edycjaOkno(lista)">EDYCJA</div>
-						<div class="item sho" ng-click="usun(lista)">X</div>
+						ng-repeat="lista in zakupy | filter: filterFunction | orderBy:'kiedy' "  
+						ng-style="{'color':(lista.stan=='kupione'?'lightgray':'white')}" >
+							<div class="mid">{{lista.kiedy}}</div>
+							<div class="lon">{{lista.opis}}</div>
+							<div class="sho">{{lista.ilosc}}</div>						
+							<div class="mid">{{lista.imie}}</div>
+							<div class="item mid" ng-click="stan(lista)">{{lista.stan}}</div>
+							<div class="item mid" ng-click="edycjaOkno(lista)">EDYCJA</div>
+							<div class="item sho" ng-click="usun(lista)">X</div>
 					</div>
-					<div class="pagination" onclick="showNext">Pokaż kolejne zakupy</div>
 					
 				</div>
 			
-			</div>
+			</div></div>
 
 			<div class="panelEdit" ng-show="panelEdit">
-				<div>Panel edycji</div>
-					<div class="edycja">		
+				<div class="panelEdit_title" >Panel edycji</div>
+					<div class="edycja_menu">		
 						<div class="mid">DATA</div>
 						<div class="lon">OPIS</div>
 						<div class="sho">ILE</div>						
@@ -91,8 +92,8 @@
 							</select>
 						</div>	
 					</div>
-					<div class="edycja">	
-						<button ng-click="cofnij()">COFNIJ</button>
+					<div class="edycja_buttons">	
+						<button ng-click="cofnij()">ANULUJ</button>
 						<button ng-click="zapisz()">ZAPISZ</button>
 					</div>					
 			</div>
